@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Written by JoshuaMK 2020
 
 import atexit
