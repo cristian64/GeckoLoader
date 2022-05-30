@@ -391,7 +391,7 @@ class KernelLoader(object):
 
     def complete_data(self, codeHandler: CodeHandler, initpoint: list):
         _upperAddr, _lowerAddr = ((self.initAddress >> 16) & 0xFFFF, self.initAddress & 0xFFFF)
-        _key = random.randrange(0x100000000)
+        _key = random.randrange(0x100000000) if self.encrypt else 0x005EEDED  # Seeded
         self._rawData.seek(0)
 
         while sample := self._rawData.read(4):
