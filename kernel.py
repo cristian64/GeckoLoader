@@ -22,8 +22,13 @@ def timer(func):
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         value = func(*args, **kwargs)
+        try:
+            quiet = args[0].quiet
+        except Exception:
+            quiet = False
         end = time.perf_counter()
-        print(tools.color_text(f"\n  :: Completed in {(end - start):0.4f} seconds!\n", defaultColor=tools.TGREENLIT))
+        if not quiet:
+            print(tools.color_text(f"\n  :: Completed in {(end - start):0.4f} seconds!\n", defaultColor=tools.TGREENLIT))
         return value
     return wrapper
 
