@@ -7,10 +7,10 @@ import sys
 import tempfile
 from pathlib import Path
 
-from dolreader import DolFile
-from fileutils import resource_path
-from kernel import CodeHandler, KernelLoader
-from tools import CommandLineParser, color_text
+from .dolreader import DolFile
+from .fileutils import resource_path
+from .kernel import CodeHandler, KernelLoader
+from .tools import CommandLineParser, color_text
 
 try:
     import colorama

@@ -1,7 +1,6 @@
 from io import BytesIO
 
-import tools
-from fileutils import align_byte_size, read_uint32, write_uint32
+from .fileutils import align_byte_size, read_uint32, write_uint32
 
 class UnmappedAddressError(Exception): pass
 class SectionCountFullError(Exception): pass

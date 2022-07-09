@@ -3,7 +3,7 @@ import sys
 from os import getenv
 from pathlib import Path
 
-from tools import align_byte_size, get_alignment
+from .tools import align_byte_size, get_alignment
 
 
 def resource_path(relative_path: str = "") -> Path:
