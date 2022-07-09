@@ -230,7 +230,7 @@ class GeckoLoaderCli(CommandLineParser):
                 codeHandler.optimizeList = context["optimize"]
 
             with resource_path("bin/geckoloader.bin").open("rb") as kernelfile:
-                geckoKernel = KernelLoader(kernelfile, cli)
+                geckoKernel = KernelLoader(kernelfile, self)
                 geckoKernel.initAddress = context["initaddress"]
                 geckoKernel.verbosity = context["verbosity"]
                 geckoKernel.quiet = context["quiet"]
