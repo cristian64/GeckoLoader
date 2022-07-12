@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # Written by JoshuaMK 2020
 
-import atexit
 import shutil
 import sys
 import tempfile
@@ -35,13 +34,11 @@ except ImportError:
 
 __version__ = "v7.1.0 (command line only)"
 
-TMPDIR = Path(tempfile.mkdtemp(prefix="GeckoLoader-"))
 
-
-@atexit.register
 def clean_tmp_resources():
-    tmpfolder = TMPDIR.parent
-    for entry in tmpfolder.iterdir():
+    with tempfile.TemporaryDirectory(prefix="GeckoLoader-") as tmpdir:
+        system_tmpdir = Path(tmpdir).parent
+    for entry in system_tmpdir.iterdir():
         if entry.name.startswith("GeckoLoader-"):
             shutil.rmtree(entry, ignore_errors=True)
 
@@ -217,6 +214,8 @@ class GeckoLoaderCli(CommandLineParser):
     def _exec(self, args, tmpdir):
         context = self._validate_args(args)
 
+        tmpdir = Path(tmpdir)
+
         try:
             with context["dol"].open("rb") as dol:
                 dolFile = DolFile(dol)
@@ -241,13 +240,15 @@ class GeckoLoaderCli(CommandLineParser):
                 context["destination"].parent.mkdir(parents=True, exist_ok=True)
 
             geckoKernel.build(context["codepath"], dolFile,
-                              codeHandler, TMPDIR, context["destination"])
+                              codeHandler, tmpdir, context["destination"])
 
         except FileNotFoundError as e:
             self.error(color_text(e, defaultColor=TREDLIT))
 
 
 if __name__ == "__main__":
+    clean_tmp_resources()
+
     cli = GeckoLoaderCli('GeckoLoader', __version__,
                          description='Dol editing tool for allocating extended codespace')
 
@@ -255,4 +256,5 @@ if __name__ == "__main__":
         cli.print_splash()
     else:
         args = cli.parse_args()
-        cli._exec(args, TMPDIR)
+        with tempfile.TemporaryDirectory(prefix="GeckoLoader-") as tmpdir:
+            cli._exec(args, tmpdir)
